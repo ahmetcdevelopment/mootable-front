@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --honey-500: #F59E0B;
+    --ink-950: #0C0A09;
+    --ink-900: #1C1917;
+    --ink-800: #292524;
+    --ink-700: #44403C;
+    --ink-400: #A8A29E;
+    --ink-50: #FAFAF9;
+  }
+
+  * {
+    @apply border-ink-700;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ink-950 text-ink-50 font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  ::selection {
+    @apply bg-honey-500/30 text-honey-100;
+  }
+
+  h1, h2, h3 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           bg-honey-500 text-ink-950 font-semibold 
+           px-6 py-3 rounded-lg
+           hover:bg-honey-400 hover:shadow-glow
+           active:scale-[0.98]
+           transition-all duration-200 ease-smooth
+           focus:outline-none focus:ring-2 focus:ring-honey-500 focus:ring-offset-2 focus:ring-offset-ink-950;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2
+           bg-transparent text-ink-50 font-medium
+           border border-ink-700 
+           px-6 py-3 rounded-lg
+           hover:border-honey-500 hover:text-honey-500
+           active:scale-[0.98]
+           transition-all duration-200 ease-smooth
+           focus:outline-none focus:ring-2 focus:ring-honey-500/50 focus:ring-offset-2 focus:ring-offset-ink-950;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2
+           bg-transparent text-ink-400 font-medium
+           px-4 py-2 rounded-lg
+           hover:text-honey-500 hover:bg-ink-900
+           transition-all duration-200 ease-smooth;
+  }
+
+  .btn-social {
+    @apply w-full inline-flex items-center justify-center gap-3
+           bg-white text-ink-900 font-medium
+           px-6 py-3 rounded-lg
+           border border-ink-200
+           hover:bg-ink-50 hover:shadow-md
+           active:scale-[0.98]
+           transition-all duration-200 ease-smooth
+           focus:outline-none focus:ring-2 focus:ring-ink-300;
+  }
+
+  .input-field {
+    @apply w-full bg-ink-900 border border-ink-700 rounded-lg 
+           px-4 py-3 text-ink-50 placeholder-ink-500
+           focus:outline-none focus:border-honey-500 focus:ring-2 focus:ring-honey-500/20
+           transition-all duration-200 ease-smooth;
+  }
+
+  .input-label {
+    @apply block text-body-sm font-medium text-ink-300 mb-2;
+  }
+
+  .card {
+    @apply bg-ink-900/50 backdrop-blur-sm 
+           border border-ink-800 rounded-2xl p-6
+           shadow-card
+           hover:border-ink-700 hover:shadow-card-hover
+           transition-all duration-300 ease-smooth;
+  }
+
+  .card-solid {
+    @apply bg-ink-900 border border-ink-800 rounded-2xl p-6;
+  }
+
+  .link {
+    @apply text-honey-500 hover:text-honey-400 
+           underline-offset-4 hover:underline
+           transition-colors duration-200;
+  }
+
+  .divider {
+    @apply flex items-center gap-4 text-ink-500 text-body-sm;
+  }
+
+  .divider::before,
+  .divider::after {
+    @apply content-[''] flex-1 h-px bg-ink-700;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full 
+           text-caption font-medium
+           bg-honey-500/10 text-honey-500;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.ink.700') transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: theme('colors.ink.700');
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: theme('colors.ink.600');
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-honey-400 via-honey-500 to-honey-600 
+           bg-clip-text text-transparent;
+  }
+
+  .bg-grid {
+    background-image: radial-gradient(circle at 1px 1px, theme('colors.ink.800') 1px, transparent 0);
+    background-size: 32px 32px;
+  }
+
+  .bg-gradient-radial-honey {
+    background: radial-gradient(ellipse at top, rgba(245, 158, 11, 0.15) 0%, transparent 50%);
+  }
+
+  .animate-delay-100 { animation-delay: 100ms; }
+  .animate-delay-200 { animation-delay: 200ms; }
+  .animate-delay-300 { animation-delay: 300ms; }
+  .animate-delay-400 { animation-delay: 400ms; }
+  .animate-delay-500 { animation-delay: 500ms; }
+}
+
+/* Matrix Rain Effect */
+.matrix-rain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.matrix-column {
+  position: absolute;
+  top: -100%;
+  display: flex;
+  flex-direction: column;
+  animation: matrix-fall linear infinite;
+}
+
+.matrix-char {
+  color: theme('colors.honey.500');
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  opacity: 0;
+  animation: matrix-glow 0.5s ease-in-out forwards;
+  text-shadow: 0 0 10px theme('colors.honey.500');
+}
+
+@keyframes matrix-fall {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(200%); }
+}
+
+@keyframes matrix-glow {
+  0% { opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.3; }
+}
+
+/* Falling Cards Animation */
+@keyframes fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.animate-fall {
+  animation: fall linear infinite;
+}
+
+/* Rabbit Hop Animation */
+@keyframes hop {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(-5deg); }
+  50% { transform: translateY(0) rotate(0deg); }
+  75% { transform: translateY(-4px) rotate(5deg); }
+}
+
+.animate-hop {
+  animation: hop 2s ease-in-out infinite;
+}
+
+/* Pill Float Animation */
+@keyframes pill-float {
+  0%, 100% { transform: translateY(0) rotate(-15deg); }
+  50% { transform: translateY(-10px) rotate(-15deg); }
+}
+
+.animate-pill {
+  animation: pill-float 3s ease-in-out infinite;
+}
+
+/* Cheshire Fade Animation */
+@keyframes cheshire-fade {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.animate-cheshire {
+  animation: cheshire-fade 4s ease-in-out infinite;
+}
+
+/* Clock Tick Animation */
+@keyframes tick {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(6deg); }
+}
+
+.animate-tick {
+  animation: tick 1s ease-in-out infinite;
+}
+
+/* Spiral Animation */
+@keyframes spiral {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spiral {
+  animation: spiral 20s linear infinite;
+}
+
+/* Typewriter Effect */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: theme('colors.honey.500'); }
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid theme('colors.honey.500');
+  white-space: nowrap;
+  animation: 
+    typewriter 3s steps(40) 1s forwards,
+    blink-caret 0.75s step-end infinite;
+}
+
+/* Glitch Effect */
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+.hover-glitch:hover {
+  animation: glitch 0.3s ease-in-out;
+}
