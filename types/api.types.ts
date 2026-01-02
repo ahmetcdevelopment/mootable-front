@@ -4,6 +4,13 @@ export interface ApiResponse<T> {
   message?: string;
 }
 
+export interface ServiceResponse<T> {
+  succeeded: boolean;
+  data?: T;
+  message?: string;
+  errors?: string[];
+}
+
 export interface ApiError {
   message: string;
   code?: string;

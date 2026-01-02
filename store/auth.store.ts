@@ -33,6 +33,7 @@ export interface User {
   displayName?: string;
   avatarUrl?: string;
   roles: string[];
+  enlightenmentScore?: number;
 }
 
 interface AuthState {

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth.store";
 import { PageLoader } from "@/shared/components/PageLoader";
+import Navigation from "@/shared/components/Navigation";
 
 export default function ProtectedLayout({
   children,
@@ -31,5 +32,12 @@ export default function ProtectedLayout({
     return null;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <Navigation />
+      <main className="min-h-screen bg-black">
+        {children}
+      </main>
+    </>
+  );
 }
