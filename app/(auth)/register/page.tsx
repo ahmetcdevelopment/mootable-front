@@ -143,14 +143,6 @@ export default function RegisterPage() {
   );
 }
 
-function CheckIcon() {
-  return (
-    <svg className="w-4 h-4 text-honey-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-    </svg>
-  );
-}
-
 function GoogleIcon() {
   return (
     <svg className="w-5 h-5" viewBox="0 0 24 24">

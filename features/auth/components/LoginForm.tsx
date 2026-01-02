@@ -7,6 +7,7 @@ import { useLogin } from "../hooks/useLogin";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import { OAuth2LoginButtons } from "./OAuth2LoginButtons";
 
 export function LoginForm() {
   const { mutate: login, isPending, error } = useLogin();
@@ -110,6 +111,9 @@ export function LoginForm() {
           "Sign in"
         )}
       </button>
+
+      {/* OAuth2 Login Options */}
+      <OAuth2LoginButtons className="mt-6" />
     </form>
   );
 }

@@ -6,6 +6,8 @@ import { useState } from "react";
 
 export default function MootTablePage() {
   const params = useParams();
+  // TODO: Use mootTableId to fetch table details and messages from backend
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const mootTableId = params.mootTableId as string;
   const [message, setMessage] = useState("");
 

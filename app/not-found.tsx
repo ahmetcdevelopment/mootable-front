@@ -13,7 +13,7 @@ export default function NotFound() {
           Lost in the Matrix
         </h2>
         <p className="text-moot-textMuted mb-8 max-w-md">
-          The page you're looking for doesn't exist. Perhaps you took the wrong pill?
+          The page you&apos;re looking for doesn&apos;t exist. Perhaps you took the wrong pill?
         </p>
         
         <div className="flex items-center justify-center gap-4">
