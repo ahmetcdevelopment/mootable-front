@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { usePostStore } from '@/store/postStore';
 import { PostVisibility } from '@/types/post.types';
 import { Button } from '@/shared/ui/Button';
-import { Send, Hash, Globe, Users, Lock, Server } from 'lucide-react';
+import { Send, Hash } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 import { useAuthStore } from '@/store/auth.store';
 
@@ -65,15 +65,15 @@ export const CreatePost: React.FC<CreatePostProps> = ({
     <form
       onSubmit={handleSubmit}
       className={cn(
-        'relative border border-green-900/30 bg-black/40 backdrop-blur-sm rounded-lg overflow-hidden transition-all duration-300',
-        isFocused && 'border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.15)]',
-        'before:absolute before:inset-0 before:bg-gradient-to-br before:from-green-900/5 before:to-transparent before:pointer-events-none'
+        'relative border border-ink-700 bg-ink-800/50 backdrop-blur-sm rounded-xl overflow-hidden transition-all duration-300',
+        isFocused && 'border-honey-500/50 shadow-[0_0_20px_rgba(245,158,11,0.15)]',
+        'before:absolute before:inset-0 before:bg-gradient-to-br before:from-honey-500/5 before:to-transparent before:pointer-events-none'
       )}
     >
       <div className="relative p-4">
         <div className="flex gap-3">
           {/* User Avatar */}
-          <div className="h-10 w-10 rounded-full border border-green-500/30 bg-black flex items-center justify-center text-green-500 font-bold">
+          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-honey-500 to-honey-600 flex items-center justify-center text-ink-950 font-bold">
             {(user?.displayName || user?.username || 'U')[0].toUpperCase()}
           </div>
 
@@ -86,9 +86,9 @@ export const CreatePost: React.FC<CreatePostProps> = ({
               onBlur={() => setIsFocused(false)}
               placeholder={placeholder}
               className={cn(
-                'w-full min-h-[100px] bg-transparent border-0 text-green-100 placeholder:text-green-700',
+                'w-full min-h-[100px] bg-transparent border-0 text-ink-100 placeholder:text-ink-500',
                 'focus:ring-0 focus:outline-none resize-none',
-                'scrollbar-thin scrollbar-thumb-green-800 scrollbar-track-transparent'
+                'scrollbar-thin scrollbar-thumb-ink-700 scrollbar-track-transparent'
               )}
               maxLength={5000}
             />
@@ -98,13 +98,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({
               <div className="space-y-3 animate-in slide-in-from-top-2 duration-300">
                 {/* Tags Input */}
                 <div className="flex items-center gap-2">
-                  <Hash className="w-4 h-4 text-green-600" />
+                  <Hash className="w-4 h-4 text-honey-500" />
                   <input
                     type="text"
                     value={tags}
                     onChange={(e) => setTags(e.target.value)}
                     placeholder="Tags (comma separated)"
-                    className="flex-1 bg-transparent text-sm text-green-400 placeholder:text-green-700 focus:outline-none"
+                    className="flex-1 bg-transparent text-sm text-ink-300 placeholder:text-ink-500 focus:outline-none"
                   />
                 </div>
 
@@ -115,13 +115,13 @@ export const CreatePost: React.FC<CreatePostProps> = ({
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     placeholder="Category (optional)"
-                    className="flex-1 bg-transparent text-sm text-green-400 placeholder:text-green-700 focus:outline-none"
+                    className="flex-1 bg-transparent text-sm text-ink-300 placeholder:text-ink-500 focus:outline-none"
                   />
 
                   <select
                     value={visibility.toString()}
                     onChange={(e) => setVisibility(parseInt(e.target.value) as PostVisibility)}
-                    className="w-[140px] bg-black/50 border border-green-900/50 text-green-400 rounded px-2 py-1 text-sm focus:outline-none focus:border-green-500/50"
+                    className="w-[140px] bg-ink-900/50 border border-ink-700 text-ink-300 rounded-lg px-2 py-1 text-sm focus:outline-none focus:border-honey-500/50"
                   >
                     <option value="0">🌐 Public</option>
                     <option value="1">👥 Followers</option>
@@ -134,7 +134,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({
 
             {/* Actions */}
             <div className="flex items-center justify-between pt-2">
-              <div className="text-xs text-green-600">
+              <div className="text-xs text-ink-500">
                 {content.length}/5000
               </div>
 
@@ -142,14 +142,14 @@ export const CreatePost: React.FC<CreatePostProps> = ({
                 type="submit"
                 disabled={!content.trim() || isCreating}
                 className={cn(
-                  'bg-green-600 hover:bg-green-500 text-black font-medium',
+                  'bg-honey-500 hover:bg-honey-400 text-ink-950 font-medium',
                   'disabled:opacity-50 disabled:cursor-not-allowed',
                   'transition-all duration-300'
                 )}
               >
                 {isCreating ? (
                   <span className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-ink-950/30 border-t-ink-950 rounded-full animate-spin" />
                     Transmitting...
                   </span>
                 ) : (
@@ -164,10 +164,10 @@ export const CreatePost: React.FC<CreatePostProps> = ({
         </div>
       </div>
 
-      {/* Matrix effect on focus */}
+      {/* Subtle glow effect on focus */}
       {isFocused && (
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-900/20 to-transparent animate-matrix-rain" />
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-b from-honey-500/10 via-transparent to-honey-500/5" />
         </div>
       )}
     </form>

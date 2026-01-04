@@ -42,12 +42,14 @@ interface AuthState {
   refreshToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  _hasHydrated: boolean;
   
   setUser: (user: User | null) => void;
   setTokens: (accessToken: string, refreshToken: string) => void;
   login: (user: User, accessToken: string, refreshToken: string) => void;
   logout: () => void;
   setLoading: (isLoading: boolean) => void;
+  setHasHydrated: (state: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -58,6 +60,7 @@ export const useAuthStore = create<AuthState>()(
       refreshToken: null,
       isAuthenticated: false,
       isLoading: true,
+      _hasHydrated: false,
 
       setUser: (user) =>
         set({
@@ -90,6 +93,7 @@ export const useAuthStore = create<AuthState>()(
         }),
 
       setLoading: (isLoading) => set({ isLoading }),
+      setHasHydrated: (state: boolean) => set({ _hasHydrated: state, isLoading: false }),
     }),
     {
       name: "mootable-auth",
@@ -100,6 +104,9 @@ export const useAuthStore = create<AuthState>()(
         refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
       }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
     }
   )
 );

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Post } from '@/types/post.types';
 import { usePostStore } from '@/store/postStore';
 import { formatDistanceToNow } from 'date-fns';
-import { Heart, MessageCircle, Eye, Share2, MoreVertical, Trash2, Edit, Pin } from 'lucide-react';
+import { Heart, MessageCircle, Eye, Share2, Trash2, Edit, Pin, Sparkles, Bookmark, MoreHorizontal } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 
 interface PostCardProps {
@@ -23,6 +23,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   const { likePost, deletePost } = usePostStore();
   const [isLiking, setIsLiking] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showActions, setShowActions] = useState(false);
 
   const handleLike = async () => {
     if (isLiking) return;
@@ -39,87 +40,114 @@ export const PostCard: React.FC<PostCardProps> = ({
   };
 
   const getEnlightenmentColor = (score: number) => {
-    if (score >= 100) return 'text-green-300 shadow-green-500/50';
-    if (score >= 50) return 'text-green-400 shadow-green-500/30';
-    if (score >= 20) return 'text-green-500 shadow-green-500/20';
-    return 'text-green-600';
+    if (score >= 100) return 'text-honey-300';
+    if (score >= 50) return 'text-honey-400';
+    if (score >= 20) return 'text-honey-500';
+    return 'text-ink-400';
   };
 
   return (
     <article
       className={cn(
-        'relative border border-green-900/30 bg-black/40 backdrop-blur-sm rounded-lg overflow-hidden transition-all duration-300',
-        'hover:border-green-500/50 hover:shadow-[0_0_20px_rgba(34,197,94,0.15)]',
-        'before:absolute before:inset-0 before:bg-gradient-to-br before:from-green-900/5 before:to-transparent before:pointer-events-none',
-        isCompact && 'p-3',
-        !isCompact && 'p-4'
+        'group relative bg-ink-800/40 backdrop-blur-sm rounded-2xl overflow-hidden transition-all duration-300',
+        'border border-ink-700/50 hover:border-honey-500/30',
+        'hover:shadow-[0_8px_30px_rgba(245,158,11,0.08)]',
+        isCompact ? 'p-4' : 'p-5'
       )}
+      onMouseEnter={() => setShowActions(true)}
+      onMouseLeave={() => setShowActions(false)}
     >
-      {/* Matrix rain effect on hover */}
-      <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-green-900/5 to-transparent animate-matrix-rain" />
-      </div>
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-honey-500/[0.02] via-transparent to-ink-900/20 pointer-events-none" />
+      
+      {/* Left accent line for high enlightenment */}
+      {post.enlightenmentScore >= 50 && (
+        <div className="absolute left-0 top-4 bottom-4 w-0.5 bg-gradient-to-b from-honey-400 via-honey-500 to-honey-600 rounded-full" />
+      )}
 
       <div className="relative">
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-start gap-3">
-            <div className="h-10 w-10 rounded-full border border-green-500/30 bg-black flex items-center justify-center text-green-500 font-bold">
-              {post.userDisplayName[0].toUpperCase()}
+            {/* Avatar with gradient ring */}
+            <div className="relative">
+              <div className="h-11 w-11 rounded-full bg-gradient-to-br from-honey-400 to-honey-600 p-0.5">
+                <div className="h-full w-full rounded-full bg-ink-900 flex items-center justify-center">
+                  <span className="text-honey-400 font-bold text-sm">
+                    {post.userDisplayName[0].toUpperCase()}
+                  </span>
+                </div>
+              </div>
+              {/* Online indicator */}
+              <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 rounded-full border-2 border-ink-900" />
             </div>
 
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-medium text-green-400">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-semibold text-ink-100 hover:text-honey-400 cursor-pointer transition-colors">
                   {post.userDisplayName}
                 </span>
-                <span className="text-xs text-green-600">
+                <span className="text-caption text-ink-500">
                   @{post.userName}
                 </span>
                 {post.isPinned && (
-                  <Pin className="w-3 h-3 text-green-500" />
+                  <span className="flex items-center gap-1 text-xs text-honey-500 bg-honey-500/10 px-2 py-0.5 rounded-full">
+                    <Pin className="w-3 h-3" />
+                    Pinned
+                  </span>
                 )}
               </div>
-              <time className="text-xs text-green-600/70">
+              <time className="text-caption text-ink-500">
                 {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
               </time>
             </div>
           </div>
 
-          {post.isOwnPost && (
-            <div className="flex gap-1">
-              {onEdit && (
+          {/* Actions Menu */}
+          <div className={cn(
+            'flex items-center gap-1 transition-opacity duration-200',
+            showActions ? 'opacity-100' : 'opacity-0'
+          )}>
+            {post.isOwnPost && (
+              <>
+                {onEdit && (
+                  <button
+                    onClick={onEdit}
+                    className="p-2 hover:bg-ink-700/50 rounded-lg transition-colors"
+                    title="Edit"
+                  >
+                    <Edit className="w-4 h-4 text-ink-400 hover:text-honey-400" />
+                  </button>
+                )}
                 <button
-                  onClick={onEdit}
-                  className="p-1 hover:bg-green-900/20 rounded transition-colors"
+                  onClick={handleDelete}
+                  disabled={isDeleting}
+                  className="p-2 hover:bg-red-500/10 rounded-lg transition-colors"
+                  title="Delete"
                 >
-                  <Edit className="w-4 h-4 text-green-500" />
+                  <Trash2 className="w-4 h-4 text-ink-400 hover:text-red-400" />
                 </button>
-              )}
-              <button
-                onClick={handleDelete}
-                disabled={isDeleting}
-                className="p-1 hover:bg-red-900/20 rounded transition-colors"
-              >
-                <Trash2 className="w-4 h-4 text-red-500" />
-              </button>
-            </div>
-          )}
+              </>
+            )}
+            <button className="p-2 hover:bg-ink-700/50 rounded-lg transition-colors">
+              <MoreHorizontal className="w-4 h-4 text-ink-400" />
+            </button>
+          </div>
         </div>
 
         {/* Content */}
-        <div className="mb-3">
-          <p className="text-green-100 whitespace-pre-wrap break-words">
+        <div className="mb-4 pl-14">
+          <p className="text-ink-100 text-body leading-relaxed whitespace-pre-wrap break-words">
             {post.content}
           </p>
 
-          {/* Tags */}
+          {/* Tags - Rabbit Holes */}
           {post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-2">
+            <div className="flex flex-wrap gap-2 mt-3">
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
-                  className="text-xs text-green-400 hover:text-green-300 cursor-pointer"
+                  className="text-caption text-honey-400 hover:text-honey-300 bg-honey-500/10 hover:bg-honey-500/20 px-2.5 py-1 rounded-full cursor-pointer transition-colors"
                 >
                   #{tag}
                 </span>
@@ -127,37 +155,42 @@ export const PostCard: React.FC<PostCardProps> = ({
             </div>
           )}
 
-          {/* Category */}
+          {/* Category Badge */}
           {post.category && (
-            <div className="mt-2">
-              <span className="text-xs px-2 py-1 bg-green-900/30 text-green-400 rounded">
+            <div className="mt-3">
+              <span className="text-caption px-3 py-1 bg-ink-700/50 text-ink-300 rounded-full border border-ink-600/50">
                 {post.category}
               </span>
             </div>
           )}
         </div>
 
-        {/* Media URLs (placeholder for future implementation) */}
+        {/* Media Preview */}
         {post.mediaUrls.length > 0 && (
-          <div className="mb-3 p-2 bg-green-900/10 rounded">
-            <span className="text-xs text-green-500">
-              {post.mediaUrls.length} media attachment(s)
-            </span>
+          <div className="mb-4 pl-14">
+            <div className="bg-ink-800/50 border border-ink-700/50 rounded-xl p-3 flex items-center gap-2">
+              <div className="w-10 h-10 bg-honey-500/10 rounded-lg flex items-center justify-center">
+                <span className="text-lg">📎</span>
+              </div>
+              <span className="text-caption text-ink-400">
+                {post.mediaUrls.length} attachment{post.mediaUrls.length > 1 ? 's' : ''}
+              </span>
+            </div>
           </div>
         )}
 
         {/* Footer / Actions */}
-        <div className="flex items-center justify-between pt-2 border-t border-green-900/30">
-          <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between pl-14 pt-3">
+          <div className="flex items-center gap-1">
             {/* Like Button */}
             <button
               onClick={handleLike}
               disabled={isLiking}
               className={cn(
-                'flex items-center gap-1 transition-all duration-300 group',
+                'flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-300 group',
                 post.isLikedByCurrentUser
-                  ? 'text-green-400'
-                  : 'text-green-600 hover:text-green-400'
+                  ? 'text-rose-400 bg-rose-500/10'
+                  : 'text-ink-400 hover:text-rose-400 hover:bg-rose-500/10'
               )}
             >
               <Heart
@@ -166,49 +199,54 @@ export const PostCard: React.FC<PostCardProps> = ({
                   post.isLikedByCurrentUser && 'fill-current'
                 )}
               />
-              <span className="text-xs">{post.likeCount}</span>
+              <span className="text-caption font-medium">{post.likeCount}</span>
             </button>
 
             {/* Reply Button */}
             <button
               onClick={onReply}
-              className="flex items-center gap-1 text-green-600 hover:text-green-400 transition-colors group"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-ink-400 hover:text-sky-400 hover:bg-sky-500/10 transition-all group"
             >
               <MessageCircle className="w-4 h-4 transition-transform group-hover:scale-110" />
-              <span className="text-xs">{post.replyCount}</span>
+              <span className="text-caption font-medium">{post.replyCount}</span>
             </button>
 
-            {/* View Count */}
-            <div className="flex items-center gap-1 text-green-600">
-              <Eye className="w-4 h-4" />
-              <span className="text-xs">{post.viewCount}</span>
-            </div>
+            {/* Share Button */}
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-ink-400 hover:text-emerald-400 hover:bg-emerald-500/10 transition-all group">
+              <Share2 className="w-4 h-4 transition-transform group-hover:scale-110" />
+              <span className="text-caption font-medium">{post.shareCount}</span>
+            </button>
 
-            {/* Share Count */}
-            <div className="flex items-center gap-1 text-green-600">
-              <Share2 className="w-4 h-4" />
-              <span className="text-xs">{post.shareCount}</span>
-            </div>
+            {/* Bookmark */}
+            <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-ink-400 hover:text-honey-400 hover:bg-honey-500/10 transition-all group">
+              <Bookmark className="w-4 h-4 transition-transform group-hover:scale-110" />
+            </button>
           </div>
 
-          {/* Enlightenment Score */}
-          <div
-            className={cn(
-              'flex items-center gap-1',
-              getEnlightenmentColor(post.enlightenmentScore)
-            )}
-          >
-            <span className="text-xs font-mono">
-              ⚡ {post.enlightenmentScore}
-            </span>
+          {/* Right side: Views & Enlightenment */}
+          <div className="flex items-center gap-3">
+            {/* View Count */}
+            <div className="flex items-center gap-1 text-ink-500">
+              <Eye className="w-3.5 h-3.5" />
+              <span className="text-caption">{post.viewCount}</span>
+            </div>
+
+            {/* Enlightenment Score */}
+            <div
+              className={cn(
+                'flex items-center gap-1.5 px-2.5 py-1 rounded-full',
+                post.enlightenmentScore >= 50 ? 'bg-honey-500/10' : 'bg-ink-700/30',
+                getEnlightenmentColor(post.enlightenmentScore)
+              )}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span className="text-caption font-medium">
+                {post.enlightenmentScore}
+              </span>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Matrix glow effect for high enlightenment */}
-      {post.enlightenmentScore >= 50 && (
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-green-600/20 to-green-400/20 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-500"></div>
-      )}
     </article>
   );
 };

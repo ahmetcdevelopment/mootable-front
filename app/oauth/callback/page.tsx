@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, Suspense } from "react";
+import { useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/store/auth.store";
 import { PageLoader } from "@/shared/components/PageLoader";
@@ -8,10 +8,15 @@ import { PageLoader } from "@/shared/components/PageLoader";
 function OAuth2CallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const authStore = useAuthStore();
+  const login = useAuthStore((state) => state.login);
+  const hasProcessed = useRef(false);
 
   useEffect(() => {
-    const handleOAuth2Callback = async () => {
+    // Prevent running multiple times
+    if (hasProcessed.current) return;
+    hasProcessed.current = true;
+
+    const handleOAuth2Callback = () => {
       // Extract tokens and user info from URL params
       const accessToken = searchParams.get("access_token");
       const refreshToken = searchParams.get("refresh_token");
@@ -31,7 +36,7 @@ function OAuth2CallbackContent() {
 
       if (accessToken && refreshToken && userId) {
         // Store tokens and user info
-        authStore.login(
+        login(
           {
             id: userId,
             username: username || "",
@@ -59,7 +64,7 @@ function OAuth2CallbackContent() {
     };
 
     handleOAuth2Callback();
-  }, [searchParams, router, authStore]);
+  }, [searchParams, router, login]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-ink-950">

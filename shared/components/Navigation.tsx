@@ -14,7 +14,7 @@ import {
   LogOut,
   User,
   ChevronDown,
-  Zap
+  Sparkles
 } from 'lucide-react';
 import { cn } from '@/shared/utils/cn';
 
@@ -31,7 +31,7 @@ export const Navigation: React.FC = () => {
     },
     {
       href: '/servers',
-      label: 'Nebuchadnezzar',
+      label: 'Ships',
       icon: Users,
       description: 'Your Ships'
     },
@@ -48,25 +48,15 @@ export const Navigation: React.FC = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-green-900/30 bg-black/90 backdrop-blur-xl">
-      {/* Matrix effect overlay */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `repeating-linear-gradient(
-            90deg,
-            transparent,
-            transparent 2px,
-            #00ff00 2px,
-            #00ff00 4px
-          )`,
-        }} />
-      </div>
+    <nav className="sticky top-0 z-50 border-b border-ink-800 bg-ink-900/95 backdrop-blur-xl">
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 bg-grid opacity-5 pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-8">
-            <Link href="/wonderland">
+            <Link href="/wonderland" className="hover:opacity-80 transition-opacity">
               <Logo size="sm" />
             </Link>
 
@@ -81,26 +71,26 @@ export const Navigation: React.FC = () => {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'relative px-4 py-2 rounded-lg transition-all duration-300',
-                      'hover:bg-green-900/20 group',
-                      active && 'bg-green-900/30'
+                      'relative px-4 py-2 rounded-lg transition-all duration-200',
+                      'hover:bg-ink-800/50 group',
+                      active && 'bg-ink-800/70'
                     )}
                   >
                     <div className="flex items-center gap-2">
                       <Icon className={cn(
                         'w-4 h-4 transition-colors',
-                        active ? 'text-green-400' : 'text-green-600 group-hover:text-green-500'
+                        active ? 'text-honey-500' : 'text-ink-400 group-hover:text-honey-400'
                       )} />
                       <span className={cn(
-                        'font-medium transition-colors',
-                        active ? 'text-green-400' : 'text-green-600 group-hover:text-green-500'
+                        'text-body-sm font-medium transition-colors',
+                        active ? 'text-ink-50' : 'text-ink-400 group-hover:text-ink-200'
                       )}>
                         {item.label}
                       </span>
                     </div>
 
                     {active && (
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-500 rounded-full" />
+                      <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-honey-500 rounded-full" />
                     )}
                   </Link>
                 );
@@ -112,26 +102,29 @@ export const Navigation: React.FC = () => {
           <div className="flex items-center gap-4">
             {/* Enlightenment Score */}
             {user && (
-              <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-900/20 border border-green-800/30">
-                <Zap className="w-4 h-4 text-green-500" />
-                <span className="text-sm font-mono text-green-400">
+              <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-ink-800/50 border border-ink-700">
+                <Sparkles className="w-4 h-4 text-honey-500" />
+                <span className="text-caption font-medium text-ink-200">
                   {user.enlightenmentScore || 0}
                 </span>
               </div>
             )}
 
             {/* User Menu */}
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full border border-green-500/30 bg-black flex items-center justify-center text-green-500 font-bold">
+            <div className="flex items-center gap-3">
+              <div className="h-9 w-9 rounded-full bg-gradient-to-br from-honey-500 to-honey-600 flex items-center justify-center text-ink-950 font-bold text-sm shadow-lg shadow-honey-500/20">
                 {(user?.displayName || user?.username || 'U')[0].toUpperCase()}
               </div>
-              <span className="hidden md:block text-green-400 font-medium">
-                {user?.displayName || user?.username}
-              </span>
+              <div className="hidden md:block">
+                <p className="text-body-sm font-medium text-ink-100">
+                  {user?.displayName || user?.username}
+                </p>
+                <p className="text-caption text-ink-500">Online</p>
+              </div>
               <Button
                 onClick={logout}
                 variant="ghost"
-                className="text-red-400 hover:bg-red-900/20 p-2"
+                className="text-ink-400 hover:text-ink-200 hover:bg-ink-800/50 p-2 ml-2"
               >
                 <LogOut className="w-4 h-4" />
               </Button>

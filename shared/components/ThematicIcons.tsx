@@ -288,6 +288,8 @@ export function CheshireCatSmile({ size = 80, className }: IconProps) {
 
 export function FallingCards({ className }: { className?: string }) {
   const cards = ["♠", "♥", "♦", "♣"];
+  // Use fixed durations to avoid hydration mismatch (no Math.random())
+  const durations = [8, 10, 9, 11, 8.5, 10.5, 9.5, 11.5];
   
   return (
     <div className={cn("absolute inset-0 overflow-hidden pointer-events-none", className)}>
@@ -298,7 +300,7 @@ export function FallingCards({ className }: { className?: string }) {
           style={{
             left: `${10 + i * 12}%`,
             animationDelay: `${i * 0.7}s`,
-            animationDuration: `${8 + Math.random() * 4}s`,
+            animationDuration: `${durations[i]}s`,
           }}
         >
           <span className={i % 2 === 0 ? "text-honey-500/30" : "text-red-500/30"}>

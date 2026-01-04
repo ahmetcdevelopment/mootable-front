@@ -1,9 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import { Logo, MootableIcon } from "@/shared/components/Logo";
 import { RegisterForm } from "@/features/auth/components/RegisterForm";
 import { RedPill, WhiteRabbit, RabbitHole, PocketWatch } from "@/shared/components/ThematicIcons";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+
 export default function RegisterPage() {
+  const handleOAuthLogin = (provider: string) => {
+    window.location.href = `${API_URL}/oauth2/login/${provider.toLowerCase()}`;
+  };
+
   return (
     <div className="min-h-screen bg-ink-950 flex">
       {/* Left Side - Branding */}
@@ -106,11 +114,17 @@ export default function RegisterPage() {
 
           {/* Social Login Buttons */}
           <div className="space-y-3 mb-8">
-            <button className="btn-social group">
+            <button 
+              className="btn-social group"
+              onClick={() => handleOAuthLogin("Google")}
+            >
               <GoogleIcon />
               Sign up with Google
             </button>
-            <button className="btn-social group">
+            <button 
+              className="btn-social group"
+              onClick={() => handleOAuthLogin("Microsoft")}
+            >
               <MicrosoftIcon />
               Sign up with Microsoft
             </button>

@@ -102,12 +102,23 @@ export const useServerStore = create<ServerState>()(
               currentQuery: mergedQuery
             });
           } else {
-            throw new Error(response.errors?.[0] || 'Failed to scan for ships');
+            // API returned error - set empty state without throwing
+            set({
+              servers: [],
+              totalCount: 0,
+              hasNextPage: false,
+              hasPreviousPage: false,
+              currentQuery: mergedQuery
+            });
           }
-        } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : 'Failed to scan for ships';
-          set({ error: errorMessage });
-          console.error(errorMessage);
+        } catch {
+          // Network error or API unavailable - set empty state gracefully
+          set({
+            servers: [],
+            totalCount: 0,
+            hasNextPage: false,
+            hasPreviousPage: false
+          });
         } finally {
           set({ isLoading: false });
         }

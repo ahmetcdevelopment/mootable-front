@@ -317,3 +317,86 @@
 .hover-glitch:hover {
   animation: glitch 0.3s ease-in-out;
 }
+
+/* App Logo Loader Animation */
+@keyframes logo-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-logo-spin {
+  animation: logo-spin 3s linear infinite;
+}
+
+/* Desktop App Styles - Tauri compatible */
+.app-drag-region {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+.app-no-drag {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+/* Sidebar styles */
+.sidebar-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sidebar-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Server icon styles */
+.server-icon {
+  @apply w-12 h-12 rounded-2xl bg-ink-800 flex items-center justify-center
+         text-ink-400 hover:text-honey-500 hover:bg-ink-700
+         transition-all duration-200 cursor-pointer
+         hover:rounded-xl;
+}
+
+.server-icon.active {
+  @apply bg-honey-500 text-ink-950 rounded-xl;
+}
+
+.server-icon-wrapper {
+  @apply relative flex items-center justify-center;
+}
+
+.server-icon-wrapper::before {
+  content: '';
+  @apply absolute left-0 w-1 h-0 bg-honey-500 rounded-r-full transition-all duration-200;
+}
+
+.server-icon-wrapper:hover::before {
+  @apply h-5;
+}
+
+.server-icon-wrapper.active::before {
+  @apply h-10;
+}
+
+/* Channel list styles */
+.channel-item {
+  @apply flex items-center gap-2 px-2 py-1.5 rounded-md
+         text-ink-400 hover:text-ink-200 hover:bg-ink-800/50
+         transition-all duration-150 cursor-pointer;
+}
+
+.channel-item.active {
+  @apply bg-ink-800 text-ink-100;
+}
+
+/* Tooltip styles */
+.tooltip {
+  @apply absolute left-full ml-2 px-3 py-1.5 bg-ink-950 border border-ink-700
+         rounded-md text-body-sm text-ink-100 whitespace-nowrap
+         opacity-0 invisible pointer-events-none
+         transition-all duration-150 z-50;
+}
+
+.tooltip-trigger:hover .tooltip {
+  @apply opacity-100 visible;
+}
